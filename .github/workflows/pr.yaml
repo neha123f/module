@@ -28,11 +28,11 @@ name: update submodules
   #          * * * * *
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - dev
+ # push:
+ #   branches:
+    #  - main
+    #  - master
+#- dev
  # schedule:
   #  - cron: "* * * * *"
 
