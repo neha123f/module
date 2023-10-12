@@ -1,4 +1,4 @@
-name: update submodules
+name: PR update submodules
 
 # requires sudmodules URL to be "https..." (no ssh)
 #
