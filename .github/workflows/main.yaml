@@ -13,6 +13,7 @@ jobs:
 
     - name: Update Submodule
       run: |
+        tree
         # Update the submodule to the latest commit in its repository
         git submodule update --remote
 
