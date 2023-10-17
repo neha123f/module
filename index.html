@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Submodule Content</title>
+    <meta charset="utf-8">
+    <title>Submodule Repository</title>
 </head>
 <body>
-    <h1>Welcome to the Submodule Content</h1>
-    <p>Click the link below to access the submodule repository:</p>
-    <a href="https://github.com/neha123f/test.git" target="_blank">Submodule Repository</a>
+    <h1>Welcome to the Submodule Repository</h1>
+    <div id="submodule-content"></div>
+
+    <script>
+        // GitHub API URL for the submodule repository
+        const apiUrl = 'https://github.com/neha123f/test.git';
+
+        // Function to fetch and display submodule content
+        async function fetchAndDisplaySubmoduleContent() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const contentDiv = document.getElementById('submodule-content');
+
+                if (Array.isArray(data)) {
+                    // If the response is an array, it contains files/folders
+                    data.forEach(item => {
+                        const link = document.createElement('a');
+                        link.href = item.html_url;
+                        link.textContent = item.name;
+                        link.target = '_blank';
+                        contentDiv.appendChild(link);
+                        contentDiv.appendChild(document.createElement('br'));
+                    });
+                } else {
+                    // If the response is not an array, it's an error message
+                    contentDiv.textContent = 'Error: Unable to fetch submodule content.';
+                }
+            } catch (error) {
+                console.error('Error fetching submodule content:', error);
+            }
+        }
+
+        // Call the function to fetch and display submodule content
+        fetchAndDisplaySubmoduleContent();
+    </script>
 </body>
 </html>
