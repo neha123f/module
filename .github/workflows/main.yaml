@@ -1,30 +1,32 @@
-name: Update Submodule
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Build Number</title>
+</head>
+<body>
+    <h1>Last Build Number</h1>
+    <p>
+        Owner: <span id="owner"></span><br> 
+        Build Number: <span id="buildNumber"></span>
+    </p>
 
-on:
-  workflow_dispatch: # Trigger the workflow manually
+    <script>
+        // Function to fetch build information from a JSON file
+        async function fetchBuildInfo() {
+            try {
+                const response = await fetch('build-info.json');
+                const data = await response.json();
 
-jobs:
-  update-submodule:
-    runs-on: ubuntu-latest
+                // Set the owner and build number from the JSON file
+                document.getElementById('owner').textContent = data.owner;
+                document.getElementById('buildNumber').textContent = data.buildNumber;
+            } catch (error) {
+                console.error('Error fetching build information:', error);
+            }
+        }
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-         submodules: true
-
-    - name: Update Submodule
-      run: |
-        tree
-        # Update the submodule to the latest commit in its repository
-        git submodule update --remote
-    - name: Commit and Push
-      run: |
-        # Commit the updated submodule reference
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
-        git commit -m "Update submodule reference"
-        git push origin main
-      env:
-       GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
+        // Call the function to fetch build information
+        fetchBuildInfo();
+    </script>
+</body>
+</html>
