@@ -11,15 +11,16 @@
     </p>
 
     <script>
-        // Function to fetch the build information from an API
+        // Function to fetch build information from GitHub Actions context
         async function fetchBuildInfo() {
             try {
-                const response = await fetch('https://your-api-endpoint.com/build-info'); // Replace with your API endpoint
-                const data = await response.json();
+                // Access GitHub Actions context to get the owner and build number
+                const owner = '${{ github.actor }}'; // GitHub username of the workflow initiator
+                const buildNumber = '${{ github.run_number }}'; // Build or run number
 
-                // Set the owner and build number from the API response
-                document.getElementById('owner').textContent = data.owner;
-                document.getElementById('buildNumber').textContent = data.number;
+                // Set the owner and build number in the HTML page
+                document.getElementById('owner').textContent = owner;
+                document.getElementById('buildNumber').textContent = buildNumber;
             } catch (error) {
                 console.error('Error fetching build information:', error);
             }
