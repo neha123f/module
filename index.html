@@ -6,21 +6,20 @@
 <body>
     <h1>Last Build Number</h1>
     <p>
-        Owner: <span id="owner"></span>
+        Owner: <span id="owner"></span><br>
         Build Number: <span id="buildNumber"></span>
     </p>
 
     <script>
-        // Function to fetch the build information from GitHub Actions context
+        // Function to fetch build information from a JSON file
         async function fetchBuildInfo() {
             try {
-                // Access GitHub Actions context to get the owner and build number
-                const owner = '${{ github.actor }}'; // GitHub username of the workflow initiator
-                const buildNumber = '${{ github.run_number }}'; // Build or run number
+                const response = await fetch('build-info.json');
+                const data = await response.json();
 
-                // Replace the placeholders in the HTML with actual values
-                document.getElementById('owner').textContent = owner;
-                document.getElementById('buildNumber').textContent = buildNumber;
+                // Set the owner and build number from the JSON file
+                document.getElementById('owner').textContent = data.owner;
+                document.getElementById('buildNumber').textContent = data.buildNumber;
             } catch (error) {
                 console.error('Error fetching build information:', error);
             }
