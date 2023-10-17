@@ -11,14 +11,14 @@
     </p>
 
     <script>
-        // Function to fetch build information from GitHub Actions context
+        // Function to fetch the build information from GitHub Actions context
         async function fetchBuildInfo() {
             try {
                 // Access GitHub Actions context to get the owner and build number
                 const owner = '${{ github.actor }}'; // GitHub username of the workflow initiator
                 const buildNumber = '${{ github.run_number }}'; // Build or run number
 
-                // Set the owner and build number in the HTML page
+                // Replace the placeholders in the HTML with actual values
                 document.getElementById('owner').textContent = owner;
                 document.getElementById('buildNumber').textContent = buildNumber;
             } catch (error) {
