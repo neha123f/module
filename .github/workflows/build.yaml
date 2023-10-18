@@ -24,7 +24,7 @@ jobs:
         submodules: true
     - name: Change Submodule Branch
       run: |
-        cd module/test  # Replace with the actual path to your submodule
+        cd test  # Replace with the actual path to your submodule
         git checkout main  # Change the submodule to the "main" branch
         cd ..
 
