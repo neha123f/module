@@ -42,7 +42,7 @@ jobs:
           LATEST_COMMIT_SHA=${{github.run_number}}
 
           # Update the index.html file with the latest commit SHA
-          sed -i 's/^latest build:.*/latest build:$LATEST_COMMIT_SHA/' index.html
+          sed "s/Latest Build:.*\/p>/Latest Build: $LATEST_COMMIT_SHA<\/p>/g" index.html
           #sed -i "s/{LATEST_COMMIT_SHA}/$LATEST_COMMIT_SHA/g" index.html
 
           # Commit and push the changes
