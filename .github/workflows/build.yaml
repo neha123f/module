@@ -24,9 +24,8 @@ jobs:
         submodules: true
     - name: Change Submodule Branch
       run: |
-        cd test  # Replace with the actual path to your submodule
+        # Replace with the actual path to your submodule
         git checkout main  # Change the submodule to the "main" branch
-        cd ..
         git pull --recurse-submodules
         git submodule update --remote --recursive
         git config --global user.name 'Git bot'
