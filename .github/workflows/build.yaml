@@ -1,7 +1,6 @@
 name: 'build number'
 
 on:
-  # Allows you to run this workflow manually from the Actions tab or through HTTP API
   workflow_dispatch:
 
 jobs:
@@ -9,24 +8,19 @@ jobs:
     name: 'Submodules Sync'
     runs-on: ubuntu-latest
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
       with:
         token: ${{ secrets.CI_TOKEN }}
         submodules: true
 
-    # Update references
     - name: Git Sumbodule Update
       run: |
         git pull --recurse-submodules
         git submodule update --remote --recursive
+        
     - name: Commit update
       run: |
         git config --global user.name 'Git bot'
@@ -48,13 +42,9 @@ jobs:
         
      - name: Update Build Number
        run: |
-          # Get the latest commit SHA from the main branch
-          LATEST_COMMIT_SHA=${{github.run_number}}
-          
-          # Update the index.html file with the latest commit SHA
-          sed -i "s/Latest Build number:.*\/p>/Latest Build number: $LATEST_COMMIT_SHA<\/p>/g" index.html
+          LATEST_BUILD_NUM=${{github.run_number}}
+          sed -i "s/Latest Build number:.*\/p>/Latest Build number: $LATEST_BUILD_NUM<\/p>/g" index.html
           #sed -i "s/{LATEST_COMMIT_SHA}/$LATEST_COMMIT_SHA/g" index.html
-          # Commit and push the changes
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git commit -am "Update build number to $LATEST_COMMIT_SHA"
