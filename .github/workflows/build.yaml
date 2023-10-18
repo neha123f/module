@@ -38,6 +38,7 @@ jobs:
   pages:
      name: build number
      runs-on: ubuntu
+     needs: build
      steps:
      - name: repo checkout
        uses: actions/checkout@v2
