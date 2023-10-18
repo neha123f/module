@@ -48,7 +48,7 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git commit -am "Update build number to $LATEST_COMMIT_SHA"
-          git push origin main:dev
+          git push origin dev
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
