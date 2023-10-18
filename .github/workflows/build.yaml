@@ -39,7 +39,7 @@ jobs:
     - name: Update Build Number
       run: |
           # Get the latest commit SHA from the main branch
-          LATEST_COMMIT_SHA=$(git log -1 --format="%h")
+          LATEST_COMMIT_SHA=${{github.run_number}}
 
           # Update the index.html file with the latest commit SHA
           sed -i 'i/latest build/$LATEST_COMMIT_SHA' index.html
