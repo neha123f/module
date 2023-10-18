@@ -42,7 +42,7 @@ jobs:
           LATEST_COMMIT_SHA=$(git log -1 --format="%h")
 
           # Update the index.html file with the latest commit SHA
-          sed -i 's/<p>Latest Build: .\+<\/p>/<p>Latest Build: $LATEST_COMMIT_SHA<\/p>/' index.html
+          sed -i 'i/latest build/$LATEST_COMMIT_SHA' index.html
           #sed -i "s/{LATEST_COMMIT_SHA}/$LATEST_COMMIT_SHA/g" index.html
 
           # Commit and push the changes
