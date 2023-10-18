@@ -22,6 +22,11 @@ jobs:
         token: ${{ secrets.CI_TOKEN }}
         ref: dev
         submodules: true
+    - name: Change Submodule Branch
+      run: |
+        cd module/test  # Replace with the actual path to your submodule
+        git checkout main  # Change the submodule to the "main" branch
+        cd ..
 
     # Update references
     - name: Git Sumbodule Update
@@ -35,15 +40,13 @@ jobs:
         git config --global user.email 'bot@noreply.github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git commit -am "Auto updated submodule references" && git push || echo "No changes to commit"
-        git push origin main
+        
 
     - name: Update Build Number
       run: |
-          # Get the latest commit SHA from the main branch
-          LATEST_COMMIT_SHA=${{github.run_number}}
-          
-          # Update the index.html file with the latest commit SHA
-          sed -i "s/Latest Build number:.*\/p>/Latest Build number: $LATEST_COMMIT_SHA<\/p>/g" index.html
+          git checkout dev
+          LATEST_BUILD_NUM=${{github.run_number}}
+          sed -i "s/Latest Build number:.*\/p>/Latest Build number: $LATEST_BUILD_NUM<\/p>/g" index.html
           #sed -i "s/{LATEST_COMMIT_SHA}/$LATEST_COMMIT_SHA/g" index.html
 
           # Commit and push the changes
