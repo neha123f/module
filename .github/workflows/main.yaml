@@ -36,43 +36,6 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git commit -am "Auto updated submodule references" && git push || echo "No changes to commit"
 
-    - name: Update Build Number in HTML
-      uses: actions/github-script@v6
-      with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const { owner, repo, sha } = context;
-            
-            // Read the HTML file
-            const filePath = 'index.html';
-            let fileContents = fs.readFileSync(filePath, 'utf8');
-
-            // Extract the build number from the build-info.json
-            const buildInfo = JSON.parse(fs.readFileSync('build-info.json', 'utf8'));
-            const newBuildNumber = buildInfo.buildNumber;
-
-            // Update the build number in the HTML file
-            fileContents = fileContents.replace(/<span id="buildNumber">(\d+)<\/span>/, `<span id="buildNumber">${newBuildNumber}</span>`);
-
-            // Write the updated content back to the HTML file
-            fs.writeFileSync(filePath, fileContents);
-
-            // Commit the changes
-            await github.rest.repos.createOrUpdateFileContents({
-              owner: owner,
-              repo: repo,
-              path: filePath,
-              message: `Update build number to ${newBuildNumber}`,
-              content: Buffer.from(fileContents).toString('base64'),
-              sha: sha,
-            });
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
 
 
 
