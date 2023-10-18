@@ -36,49 +36,20 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git commit -am "Auto updated submodule references" && git push || echo "No changes to commit"
 
-      
-    - name: Set build info
-      id: build-info
-      run: echo ::set-output name=owner::${{ github.actor }}::set-output name=build-number::${{ github.run_number }}
+    - name: Update Build Number
+      run: |
+          # Get the latest commit SHA from the main branch
+          LATEST_COMMIT_SHA=$(git log -1 --format="%h")
 
-    - name: Create JSON file
-      run: echo "{\"owner\":\"${{ steps.build-info.outputs.owner }}\",\"buildNumber\":\"${{ steps.build-info.outputs.build-number }}\"}" > build-info.json
+          # Update the index.html file with the latest commit SHA
+          sed -i "s/{LATEST_COMMIT_SHA}/$LATEST_COMMIT_SHA/g" index.html
+
+          # Commit and push the changes
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git commit -am "Update build number to $LATEST_COMMIT_SHA"
+          git push origin main:dev
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
-    - name: Update Build Number in HTML
-      uses: actions/github-script@v6
-      with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const { owner, repo, sha } = context;
-            
-            // Read the HTML file
-            const filePath = 'index.html';
-            let fileContents = fs.readFileSync(filePath, 'utf8');
-
-            // Extract the build number from the build-info.json
-            const buildInfo = JSON.parse(fs.readFileSync('build-info.json', 'utf8'));
-            const newBuildNumber = buildInfo.buildNumber;
-
-            // Update the build number in the HTML file
-            fileContents = fileContents.replace(/<span id="buildNumber">(\d+)<\/span>/, `<span id="buildNumber">${newBuildNumber}</span>`);
-
-            // Write the updated content back to the HTML file
-            fs.writeFileSync(filePath, fileContents);
-
-            // Commit the changes
-            await github.rest.repos.createOrUpdateFileContents({
-              owner: owner,
-              repo: repo,
-              path: filePath,
-              message: `Update build number to ${newBuildNumber}`,
-              content: Buffer.from(fileContents).toString('base64'),
-              sha: sha,
-            });
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
