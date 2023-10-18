@@ -43,6 +43,7 @@ jobs:
      - name: repo checkout
        uses: actions/checkout@v2
        with:
+        token: ${{ secrets.CI_TOKEN }}
         ref: dev
         
      - name: Update Build Number
