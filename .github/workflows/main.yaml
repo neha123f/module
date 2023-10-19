@@ -43,7 +43,7 @@ jobs:
      - name: Update Build Number
        run: |
           LATEST_BUILD_NUM=${{github.run_number}}
-          sed -i "s/Latest Build number:.*\/p>/Latest Build number: $LATEST_BUILD_NUM<\/p>/g" web/index.html
+          sed -i "s/Latest Build number:.*\/p>/Latest Build number: $LATEST_BUILD_NUM<\/p>/g" index.html
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git commit -am "Update build number to $LATEST_COMMIT_SHA"
